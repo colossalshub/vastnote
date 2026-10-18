@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Vastnote is a private, local-first workspace for tasks, notes, and what matters today." />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Vastnote" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <title>Vastnote</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('vastnote-theme');
+          var preference = stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var resolved = preference === 'system' ? (systemDark ? 'dark' : 'light') : preference;
+          var root = document.documentElement;
+          root.dataset.theme = resolved;
+          root.dataset.themePreference = preference;
+          root.style.colorScheme = resolved;
+          var themeColor = document.querySelector('meta[name="theme-color"]');
+          if (themeColor) themeColor.setAttribute('content', resolved === 'dark' ? '#101114' : '#ffffff');
+          var style = document.createElement('style');
+          style.id = 'theme-boot';
+          style.textContent = 'html{background:#fff;color:#17191D}html[data-theme=dark]{background:#101114;color:#F5F6F8}';
+          document.head.appendChild(style);
+        } catch (error) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
